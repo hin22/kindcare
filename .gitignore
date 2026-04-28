@@ -1,0 +1,10 @@
+# Eclipse / STS 워크스페이스 (로컬 전용 → 커밋하지 않음)
+.metadata/
+
+# H2 로컬 DB 파일
+kindcare-api/data/
+
+# 환경·비밀 (프로덕션용 분리 시)
+.env
+.env.*
+!.env.example

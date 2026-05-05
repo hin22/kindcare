@@ -42,4 +42,6 @@ npm install
 npm run dev
 ```
 
-실서비스 배포 전 `application.yml` 의 비밀(JWT 등)은 반드시 별도 보관·교체해야 합니다.
+- 개발 서버: `vite.config.js`에서 `/api` 요청이 백엔드 포트로 프록시됩니다.
+
+실서비스 배포 전 `application.yml`의 비밀(JWT 등)은 반드시 환경 변수나 별도 설정으로 교체해야 합니다.

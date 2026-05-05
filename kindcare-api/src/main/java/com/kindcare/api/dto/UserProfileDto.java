@@ -2,15 +2,17 @@ package com.kindcare.api.dto;
 
 import com.kindcare.api.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Getter
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String token;
+public class UserProfileDto {
+    private Long id;
     private String email;
     private String name;
-    private User.Role role;
     private String phone;
+    private User.Role role;
     private String avatarUrl;
 }

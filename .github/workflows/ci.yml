@@ -1,0 +1,58 @@
+# KindCare — 연속 통합(CI)
+# main / master 브랜치에 push 하거나 PR 을 열면 자동 실행됩니다.
+#
+# 하는 일:
+# 1) backend  : kindcare-api 에서 Maven 으로 테스트 + 패키지 (./mvnw verify)
+# 2) frontend : kindcare-web 에서 의존성 설치 후 프로덕션 빌드 (npm ci && npm run build)
+
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend:
+    name: Backend (Maven)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kindcare-api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: temurin
+          cache: maven
+
+      - name: Verify (test + package)
+        run: |
+          chmod +x mvnw
+          ./mvnw -B verify
+
+  frontend:
+    name: Frontend (npm)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: kindcare-web
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: kindcare-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build

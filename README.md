@@ -1,32 +1,40 @@
-# KindCare (유치원 통합 관리)
+# KindCare
 
-React(Vite) 프론트엔드 + Spring Boot 백엔드로 구성된 모노레포입니다.
+[![CI](https://github.com/hin22/kindcare/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/hin22/kindcare/actions/workflows/ci.yml)
 
-## 구조
+유치원/어린이집 업무를 가정한 웹 애플리케이션입니다.  
+교사·학부모 역할, JWT 인증, 원생·초대코드, 알림장, 대시보드, 달력(행사·특이사항) 등을 포함합니다.
 
-```
-kindcare/
-├── kindcare-web/    # 프론트엔드 (React 19 + Vite + Tailwind)
-└── kindcare-api/    # 백엔드 (Spring Boot 3.x + JWT + JPA + H2)
-```
+| | |
+|---|---|
+| Frontend | React 19, Vite, Tailwind |
+| Backend | Spring Boot 3, JPA, H2, JWT |
 
-## 필요 환경
+`kindcare-web/` · `kindcare-api/` 모노레포입니다.
 
-- **JDK 17+**
-- **Node.js 20+** (LTS 권장)
-- **Maven** (또는 `kindcare-api`의 `mvnw` 사용)
+개발 시 **Cursor IDE + Claude 모델**을 활용해 코드를 작성·정리했습니다.
 
-## 백엔드 실행
+## CI (자동 빌드)
+
+GitHub에 코드를 올리면 **백엔드·프론트 빌드가 자동**으로 실행됩니다.  
+방법: 저장소 **Actions** 탭을 열어 보시면 됩니다. 초록색이면 성공입니다.
+
+1. 로컬에서 `git push` 한 번 하기  
+2. 브라우저에서 `https://github.com/hin22/kindcare` → **Actions** 클릭  
+3. 맨 위 **CI** 줄을 눌러 로그 확인  
+
+위 배지가 회색이면 아직 한 번도 안 돌았거나, `ci.yml`이 GitHub에 없는 상태일 수 있습니다. `main`에 푸시하면 곧 갱신됩니다.
+
+## 실행 (로컬 개발)
+
+백엔드 (`http://localhost:8081` 등, `application.yml` 참고):
 
 ```powershell
 cd kindcare-api
 .\mvnw.cmd spring-boot:run
 ```
 
-- 기본 API URL: `http://localhost:8081` (`application.yml` 의 `server.port` 확인)
-- H2 파일 DB는 `kindcare-api/data/` 에 생성됩니다. (저장소에 올라가지 않도록 `.gitignore` 처리함)
-
-## 프론트엔드 실행
+프론트엔드:
 
 ```powershell
 cd kindcare-web
@@ -34,12 +42,4 @@ npm install
 npm run dev
 ```
 
-- 개발 서버 프록시: `vite.config.js` 에서 `/api` → 백엔드 포트로 전달합니다. 포트가 맞지 않으면 수정하세요.
-
-## 이력서·포트폴리오
-
-이 저장소 하나에 **프론트·백엔드 코드가 함께** 있어, 한 링크로 전체를 설명하면 됩니다.
-
-## 보안 참고
-
-`application.yml` 의 JWT 등은 **실서비스 전에 반드시 환경 변수나 별도 설정으로 교체**하세요. 학습용·포트폴리오 레포에서는 placeholder를 두는 편을 권장합니다.
+실서비스 배포 전 `application.yml` 의 비밀(JWT 등)은 반드시 별도 보관·교체해야 합니다.

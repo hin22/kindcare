@@ -9,6 +9,8 @@ import CalendarWidget from './components/CalendarWidget'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import NotesPage from './pages/NotesPage'
+import MedicationPage from './pages/MedicationPage'
+import MyPage from './pages/MyPage'
 
 const PAGE_META = {
   dashboard:  { title: '대시보드',   subtitle: '오늘의 현황을 한눈에 확인하세요.' },
@@ -82,7 +84,7 @@ function ChildrenPage({ onNotesClick }) {
 function DashboardPage() {
   const { auth } = useAuth()
   const isTeacher = auth?.role === 'TEACHER'
-  const [stats, setStats] = useState({ totalChildren: null, todayNotes: null })
+  const [stats, setStats] = useState({ totalChildren: null, todayNotes: null, pendingMedication: null })
 
   useEffect(() => {
     axios.get('/api/dashboard/stats', {
@@ -110,8 +112,8 @@ function DashboardPage() {
         },
         {
           label: '투약 의뢰',
-          value: '-',
-          sub: '준비 중',
+          value: stats.pendingMedication ?? '-',
+          sub: stats.pendingMedication != null ? `오늘 미처리 ${stats.pendingMedication}건` : null,
           iconColor: 'text-violet-500', bg: 'bg-violet-50', Icon: Pill,
         },
       ]
@@ -130,8 +132,8 @@ function DashboardPage() {
         },
         {
           label: '투약 의뢰',
-          value: '-',
-          sub: '준비 중',
+          value: stats.pendingMedication ?? '-',
+          sub: stats.pendingMedication != null ? `오늘 대기 ${stats.pendingMedication}건` : null,
           iconColor: 'text-violet-500', bg: 'bg-violet-50', Icon: Pill,
         },
       ]
@@ -196,6 +198,8 @@ function MainApp() {
     if (currentPage === 'dashboard') return <DashboardPage />
     if (currentPage === 'children') return <ChildrenPage onNotesClick={navigateToNotes} />
     if (currentPage === 'notes') return <NotesPage key={notesChildId} initialChildId={notesChildId} />
+    if (currentPage === 'medication') return <MedicationPage />
+    if (currentPage === 'mypage') return <MyPage />
     return <ComingSoon page={currentPage} />
   }
 

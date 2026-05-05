@@ -30,6 +30,10 @@ public class User {
     @Column
     private String phone;
 
+    /** 프로필 이미지 URL (HTTPS 권장, 직접 업로드는 추후 확장) */
+    @Column(length = 2000)
+    private String avatarUrl;
+
     public enum Role {
         TEACHER, PARENT
     }

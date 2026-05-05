@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface ChildRepository extends JpaRepository<Child, Long> {
     Optional<Child> findByInviteCode(String inviteCode);
     List<Child> findByParentsId(Long parentId);
+
+    boolean existsByIdAndParents_Id(Long childId, Long parentId);
 }

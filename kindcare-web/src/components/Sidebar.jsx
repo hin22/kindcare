@@ -1,5 +1,6 @@
 import { LayoutDashboard, Users, BookOpen, Pill, UserCircle, LogOut, Leaf } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
+import { useEffect, useState } from 'react'
 
 const TEACHER_NAV = [
   { id: 'dashboard',  label: '대시보드',   Icon: LayoutDashboard },
@@ -21,6 +22,12 @@ export default function Sidebar({ selected, onSelect }) {
   const isTeacher = auth?.role === 'TEACHER'
   const navItems  = isTeacher ? TEACHER_NAV : PARENT_NAV
   const initials  = auth?.name?.charAt(0) ?? '?'
+  const [avatarOk, setAvatarOk] = useState(true)
+  const showPhoto = auth?.avatarUrl && avatarOk
+
+  useEffect(() => {
+    setAvatarOk(true)
+  }, [auth?.avatarUrl])
 
   return (
     <aside className="w-60 min-h-screen bg-slate-900 flex flex-col flex-shrink-0">
@@ -62,8 +69,16 @@ export default function Sidebar({ selected, onSelect }) {
       {/* 하단 사용자 */}
       <div className="px-4 py-4 border-t border-slate-800">
         <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0">
-            {initials}
+          <div className="relative w-9 h-9 rounded-lg bg-emerald-500 flex items-center justify-center text-white text-sm font-bold flex-shrink-0 overflow-hidden ring-2 ring-slate-800">
+            {showPhoto ? (
+              <img
+                src={auth.avatarUrl}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover"
+                onError={() => setAvatarOk(false)}
+              />
+            ) : null}
+            <span className={showPhoto ? 'sr-only' : ''}>{initials}</span>
           </div>
           <div className="min-w-0">
             <p className="text-white text-sm font-semibold truncate">{auth?.name ?? '-'}</p>
